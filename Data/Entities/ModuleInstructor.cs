@@ -11,7 +11,7 @@ public class ModuleInstructor
 
     [ForeignKey("Instructor")] public int InstructorId { get; set; }
 
-    public Module Module { get; set; } = null!;
+    public Module? Module { get; set; } = null!;
 
-    public Instructor Instructor { get; set; } = null!;
+    public Instructor? Instructor { get; set; } = null!;
 }

@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CollegeManagementSystem.Data.Entities;
 
@@ -19,5 +20,5 @@ public class Instructor
 
     [Required] public DateTime HireDate { get; set; }
 
-    public List<ModuleInstructor> ModuleInstructors { get; set; } = [];
+    [JsonIgnore] public List<ModuleInstructor> ModuleInstructors { get; set; } = [];
 }
