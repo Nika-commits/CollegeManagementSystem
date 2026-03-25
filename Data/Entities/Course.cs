@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CollegeManagementSystem.Data.Entities;
 
@@ -12,5 +13,5 @@ public class Course
 
     [Required] [Range(1, 10)] public int Duration { get; set; }
 
-    public List<Module> Modules { get; set; } = [];
+    [JsonIgnore] public List<Module> Modules { get; set; } = [];
 }
