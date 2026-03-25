@@ -1,1 +1,17 @@
-using System.ComponentModel.DataAnnotations.Schema;using Microsoft.EntityFrameworkCore;namespace CollegeManagementSystem.Data.Entities;[Table("ModuleInstructors")][PrimaryKey(nameof(InstructorId), nameof(ModuleId))]public class ModuleInstructor{    [ForeignKey("Module")] public int ModuleId { get; set; }    [ForeignKey("Instructor")] public int InstructorId { get; set; }    public Module Module { get; set; } = null!;    public Instructor Instructor { get; set; } = null!;}
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+
+namespace CollegeManagementSystem.Data.Entities;
+
+[Table("ModuleInstructors")]
+[PrimaryKey(nameof(InstructorId), nameof(ModuleId))]
+public class ModuleInstructor
+{
+    [ForeignKey("Module")] public int ModuleId { get; set; }
+
+    [ForeignKey("Instructor")] public int InstructorId { get; set; }
+
+    public Module Module { get; set; } = null!;
+
+    public Instructor Instructor { get; set; } = null!;
+}

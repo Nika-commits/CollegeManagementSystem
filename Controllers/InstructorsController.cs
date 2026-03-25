@@ -1,1 +1,108 @@
-using CollegeManagementSystem.Data;using CollegeManagementSystem.Data.Entities;using Microsoft.AspNetCore.Mvc;using Microsoft.EntityFrameworkCore;namespace CollegeManagementSystem.Controllers;[Route("api/[controller]")][ApiController]public class InstructorsController(AppDbContext db) : ControllerBase{    [HttpGet]    public async Task<IActionResult> GetInstructors()    {        var instructors = await db.Instructors.ToListAsync();        return Ok(instructors);    }    [HttpGet("{id}")]    public async Task<IActionResult> GetInstructorById(int id)    {        var instructor = await db.Instructors.Where(i => i.Id == id).ToListAsync();        return Ok(instructor);    }    [HttpPost]    public async Task<IActionResult> AddInstructor(Instructor instructor)    {        await db.Instructors.AddAsync(instructor);        await db.SaveChangesAsync();        return Ok(instructor);    }    [HttpPut("{id}")]    public async Task<IActionResult> UpdateInstructor(int id, Instructor instructor)    {        // var instructorToUpdate = db.Instructors.FirstOrDefault(i => i.Id == id);        if (id != instructor.Id)        {            return BadRequest();        }        db.Update(instructor);        await db.SaveChangesAsync();        return Ok(instructor);    }    [HttpDelete("{id}")]    public async Task<IActionResult> DeleteInstructor(int id)    {        var deleted = await db.Instructors.Where(i => i.Id == id).ExecuteDeleteAsync();        if (deleted == 0)        {            return NotFound();        }        return Ok(deleted);    }    [HttpPost("bulk")]    public async Task<IActionResult> BulkInsert(List<Instructor> instructors)    {        await db.Instructors.AddRangeAsync(instructors);        await db.SaveChangesAsync();        var idsAdded = instructors.Select(i => i.Id).ToArray();        return Ok(idsAdded);    }    [HttpGet("modules")]    public async Task<IActionResult> GetInstructorsWithModules()    {        var teacherWithModules = await db.Instructors            .Include(i => i.ModuleInstructors)            .ThenInclude(mi => mi.Module)            .ThenInclude(mi => mi.Title)            .ToListAsync();        return Ok(teacherWithModules);    }    [HttpGet("count")]    public async Task<IActionResult> GetInstructorsCount()    {        var count = await db.Instructors.CountAsync();        return Ok(count);    }    [HttpGet("distinct-hire-years")]    public async Task<IActionResult> GetDistinctHireYears()    {        var distinctYears = await db.Instructors.Select(i => i.HireDate).Distinct().ToListAsync();        return Ok(distinctYears);    }    [HttpGet("module-count")]    public async Task<IActionResult> GetModulesCountPerInstructor()    {        var count = await db.Instructors.Select(i =>            new            {                InstructorName = i.FirstName + " " + i.LastName,                ModuleCount = i.ModuleInstructors.Count            }).ToListAsync();        return Ok(count);    }}
+using CollegeManagementSystem.Data;
+using CollegeManagementSystem.Data.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace CollegeManagementSystem.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class InstructorsController(AppDbContext db) : ControllerBase
+{
+
+    [HttpGet]
+    public async Task<IActionResult> GetInstructors()
+    {
+        var instructors = await db.Instructors.ToListAsync();
+        return Ok(instructors);
+    }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetInstructorById(int id)
+    {
+        var instructor = await db.Instructors.Where(i => i.Id == id).ToListAsync();
+        return Ok(instructor);
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> AddInstructor(Instructor instructor)
+    {
+        await db.Instructors.AddAsync(instructor);
+        await db.SaveChangesAsync();
+        return Ok(instructor);
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> UpdateInstructor(int id, Instructor instructor)
+    {
+        // var instructorToUpdate = db.Instructors.FirstOrDefault(i => i.Id == id);
+        if (id != instructor.Id)
+        {
+            return BadRequest();
+        }
+
+        db.Update(instructor);
+        await db.SaveChangesAsync();
+        return Ok(instructor);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteInstructor(int id)
+    {
+        var deleted = await db.Instructors.Where(i => i.Id == id).ExecuteDeleteAsync();
+
+        if (deleted == 0)
+        {
+            return NotFound();
+        }
+
+        return Ok(deleted);
+    }
+
+    [HttpPost("bulk")]
+    public async Task<IActionResult> BulkInsert(List<Instructor> instructors)
+    {
+        await db.Instructors.AddRangeAsync(instructors);
+        await db.SaveChangesAsync();
+        var idsAdded = instructors.Select(i => i.Id).ToArray();
+        return Ok(idsAdded);
+    }
+
+    [HttpGet("modules")]
+    public async Task<IActionResult> GetInstructorsWithModules()
+    {
+        var teacherWithModules = await db.Instructors
+            .Include(i => i.ModuleInstructors)
+            .ThenInclude(mi => mi.Module)
+            .ThenInclude(mi => mi.Title)
+            .ToListAsync();
+        return Ok(teacherWithModules);
+    }
+
+    [HttpGet("count")]
+    public async Task<IActionResult> GetInstructorsCount()
+    {
+        var count = await db.Instructors.CountAsync();
+        return Ok(count);
+    }
+
+    [HttpGet("distinct-hire-years")]
+    public async Task<IActionResult> GetDistinctHireYears()
+    {
+        var distinctYears = await db.Instructors.Select(i => i.HireDate).Distinct().ToListAsync();
+
+        return Ok(distinctYears);
+    }
+
+    [HttpGet("module-count")]
+    public async Task<IActionResult> GetModulesCountPerInstructor()
+    {
+        var count = await db.Instructors.Select(i =>
+            new
+            {
+                InstructorName = i.FirstName + " " + i.LastName,
+                ModuleCount = i.ModuleInstructors.Count
+            }).ToListAsync();
+        return Ok(count);
+    }
+}
