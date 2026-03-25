@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace CollegeManagementSystem.Data.Entities;
 
@@ -18,5 +19,5 @@ public class Student
 
     [EmailAddress] [MaxLength(255)] public string Email { get; set; } = string.Empty;
 
-    public List<Enrollment> Enrollments { get; set; } = [];
+    [JsonIgnore] public List<Enrollment> Enrollments { get; set; } = [];
 }
