@@ -1,7 +1,9 @@
+using CollegeManagementSystem.Data;
+using CollegeManagementSystem.Data.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace CollegeManagementSystem.Data.Entities;
+namespace CollegeManagementSystem.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
