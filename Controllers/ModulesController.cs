@@ -1,5 +1,5 @@
 using CollegeManagementSystem.Data;
-using CollegeManagementSystem.Data.Entities;
+using CollegeManagementSystem.Data.DTO.Response;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,12 +24,20 @@ public class ModulesController(AppDbContext db) : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateModule(Module module)
+    public async Task<IActionResult> AddModule(ModuleCreateDto moduleDto)
     {
-        db.Modules.Add(module);
+        db.Modules.Add(moduleDto);
         await db.SaveChangesAsync();
-        return Ok(module);
+        return Ok(moduleDto);
     }
 
-
+    [HttpGet("{id}/instructors")]
+    public async Task<IActionResult> GetInstructorByModule(int id)
+    {
+        var instructors = await db.Modules
+            .Include(m => m.ModuleInstructors)
+            .ThenInclude(mi => mi.Instructor)
+            .ToListAsync();
+        return Ok(instructors);
+    }
 }
