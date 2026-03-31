@@ -1,4 +1,6 @@
 using CollegeManagementSystem.Data;
+using CollegeManagementSystem.Services.Implementation;
+using CollegeManagementSystem.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -13,6 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"))
 );
 
+builder.Services.AddScoped<IModuleService, ModuleService>();
 
 var app = builder.Build();
 

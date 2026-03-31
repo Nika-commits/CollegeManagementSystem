@@ -4,5 +4,5 @@ namespace CollegeManagementSystem.Services.Interfaces;
 
 public interface IModuleService
 {
-    public string AddModule(ModuleCreateDto addModuleDto);
+    public Task<string> AddModule(ModuleCreateDto addModuleDto);
 }
