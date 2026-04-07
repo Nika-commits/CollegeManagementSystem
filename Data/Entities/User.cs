@@ -5,7 +5,7 @@ namespace CollegeManagementSystem.Data.Entities;
 
 public class User : IdentityUser<Guid>
 {
-    [Required] public string FirstName { get; set; } = string.Empty;
+    [Required] [MaxLength(255)] public string FirstName { get; set; } = string.Empty;
 
-    [Required] public string LastName { get; set; } = string.Empty;
+    [Required] [MaxLength(255)] public string LastName { get; set; } = string.Empty;
 }

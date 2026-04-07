@@ -1,6 +1,8 @@
 using CollegeManagementSystem.Data;
+using CollegeManagementSystem.Data.Entities;
 using CollegeManagementSystem.Services.Implementation;
 using CollegeManagementSystem.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 
@@ -16,7 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 builder.Services.AddScoped<IModuleService, ModuleService>();
-
+builder.Services.AddIdentity<User, IdentityRole<Guid>>();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
