@@ -13,9 +13,9 @@ public class ModuleService(AppDbContext db) : IModuleService
         {
             Title = moduleDto.Title,
             Description = moduleDto.Description,
-            Credits = moduleDto.Credits
+            Credits = moduleDto.Credits,
+            CourseId = moduleDto.CourseId
         };
-
 
         db.Modules.Add(module);
         await db.SaveChangesAsync();

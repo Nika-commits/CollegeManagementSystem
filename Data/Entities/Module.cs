@@ -15,6 +15,8 @@ public class Module
 
     [Required] public int Credits { get; set; }
 
+    public int CourseId { get; set; }
+
     public Course? Course { get; set; }
 
     [JsonIgnore] public List<ModuleInstructor> ModuleInstructors { get; set; } = [];
