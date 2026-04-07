@@ -12,5 +12,5 @@ public class RegisterUserDTO
 
     [Required] public string Password { get; set; } = string.Empty;
 
-    public string? Phone { get; set; }
+    [Required] [Range(10, 10)] public int? Phone { get; set; }
 }

@@ -7,7 +7,8 @@ namespace CollegeManagementSystem.Controllers;
 public class AuthController : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> RegisterUser()
+    public async Task<string> RegisterUser()
     {
+        return "0";
     }
 }
