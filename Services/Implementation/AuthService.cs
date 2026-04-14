@@ -65,4 +65,24 @@ public class AuthService(
 
         return (true, new List<string>());
     }
+
+    public async Task<(bool Success, List<string> Errors)> LoginUser(LoginUserDto data)
+    {
+        var user = await userManager.FindByEmailAsync(data.Email);
+        if (user == null)
+        {
+            return (false, new List<string> { "Invalid email or password" });
+        }
+
+        var result = await signInManager.CheckPasswordSignInAsync(user, data.Password, false);
+
+        if (!result.Succeeded)
+        {
+            return (false, new List<string> { "Invalid email or password" });
+        }
+
+        var roles = await userManager.GetRolesAsync(user);
+
+        return (true, new List<string>());
+    }
 }
