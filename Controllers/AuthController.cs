@@ -18,7 +18,7 @@ public class AuthController(IAuthService authService) : ControllerBase
             return BadRequest(errors);
         }
 
-        return Ok(user);
+        return Ok(new { Success = true, User = user.Email });
     }
 
     [HttpPost("register-instructor")]
@@ -31,7 +31,12 @@ public class AuthController(IAuthService authService) : ControllerBase
             return BadRequest(errors);
         }
 
-        return Ok(user);
+        return Ok(new
+            {
+                Success = true,
+                User = user.Email
+            }
+        );
     }
 
     [HttpPost("login")]
@@ -44,6 +49,6 @@ public class AuthController(IAuthService authService) : ControllerBase
             return BadRequest(errors);
         }
 
-        return Ok(user);
+        return Ok(new { Success = true, User = user.Email });
     }
 }
