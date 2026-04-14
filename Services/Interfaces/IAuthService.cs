@@ -4,5 +4,5 @@ namespace CollegeManagementSystem.Services.Interfaces;
 
 public interface IAuthService
 {
-    public Task<string> RegisterUser(RegisterUserDTO registerUserDto);
+    public Task<(bool Success, List<string> Errors)> RegisterUser(RegisterUserDTO registerUserDto);
 }

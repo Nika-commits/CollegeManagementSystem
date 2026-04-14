@@ -7,22 +7,22 @@ namespace CollegeManagementSystem.Services.Implementation;
 
 public class AuthService(UserManager<User> userManager) : IAuthService
 {
-    public async Task<string> RegisterUser(RegisterUserDTO registerUserDto)
+    public async Task<(bool Success, List<string> Errors)> RegisterUser(RegisterUserDTO data)
     {
         var user = new User
         {
-            FirstName = registerUserDto.FirstName,
-            LastName = registerUserDto.LastName,
-            Email = registerUserDto.Email,
-            Phone = registerUserDto.Phone
+            UserName = (data.FirstName + data.LastName).ToLower(),
+            FirstName = data.FirstName,
+            LastName = data.LastName,
+            Email = data.Email,
+            Phone = data.Phone
         };
-        var registerResult = await userManager.CreateAsync(user);
 
-        if (!registerResult.Succeeded)
-        {
-            return registerResult.ToString();
-        }
+        var result = await userManager.CreateAsync(user);
 
-        return user.Id.ToString();
+        return (
+            result.Succeeded,
+            result.Errors.Select(x => x.Description).ToList()
+        );
     }
 }
