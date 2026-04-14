@@ -53,8 +53,8 @@ public class AppDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
             new()
             {
                 Id = new Guid("8e445865-a24d-4543-a6c6-9443d048cdb9"),
-                Name = "Staff",
-                NormalizedName = "STAFF",
+                Name = "Instructor",
+                NormalizedName = "INSTRUCTOR",
                 ConcurrencyStamp = "c3d4e5f6-a7b8-9012-cdef-123456789012"
             }
         ];

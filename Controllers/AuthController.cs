@@ -8,10 +8,23 @@ namespace CollegeManagementSystem.Controllers;
 [Route("api/[controller]")]
 public class AuthController(IAuthService authService) : ControllerBase
 {
-    [HttpPost]
-    public async Task<IActionResult> RegisterUser(RegisterUserDTO user)
+    [HttpPost("register-student")]
+    public async Task<IActionResult> RegisterStudent(RegisterUserDTO user)
     {
-        var (success, errors) = await authService.RegisterUser(user);
+        var (success, errors) = await authService.RegisterStudent(user);
+
+        if (!success)
+        {
+            return BadRequest(errors);
+        }
+
+        return Ok(user);
+    }
+
+    [HttpPost("register-instructor")]
+    public async Task<IActionResult> RegisterInstructor(RegisterUserDTO user)
+    {
+        var (success, errors) = await authService.RegisterInstructor(user);
 
         if (!success)
         {
