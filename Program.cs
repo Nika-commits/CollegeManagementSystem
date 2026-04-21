@@ -1,5 +1,6 @@
 using CollegeManagementSystem.Data;
 using CollegeManagementSystem.Data.Entities;
+using CollegeManagementSystem.Middlewares;
 using CollegeManagementSystem.Services.Implementation;
 using CollegeManagementSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -34,9 +35,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseMiddleware<RequestLoggerMiddleware>();
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
