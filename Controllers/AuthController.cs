@@ -14,12 +14,9 @@ public class AuthController(IAuthService authService) : ControllerBase
     {
         var result = await authService.RegisterStudent(user);
 
-        if (!result.Success)
-        {
-            return BadRequest(result.Errors);
-        }
-
-        return Ok(new { Success = true, User = user.Email });
+        return !result.Success
+            ? BadRequest(result.Errors)
+            : Ok(new { Success = true, email = user.Email });
     }
 
     [HttpPost("register-instructor")]
@@ -27,29 +24,15 @@ public class AuthController(IAuthService authService) : ControllerBase
     {
         var result = await authService.RegisterInstructor(user);
 
-        if (!result.Success)
-        {
-            return BadRequest(result.Errors);
-        }
-
-        return Ok(new
-            {
-                Success = true,
-                User = user.Email
-            }
-        );
+        return !result.Success
+            ? BadRequest(result.Errors)
+            : Ok(new { Success = true, email = user.Email });
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> LoginUser(LoginUserDto user)
     {
         var result = await authService.LoginUser(user);
-
-        if (!result.Success)
-        {
-            return BadRequest(result.Error);
-        }
-
-        return Ok(LoginResponse.Ok("token"));
+        return !result.Success ? BadRequest(result.Error) : Ok(LoginResponse.Ok("token"));
     }
 }
