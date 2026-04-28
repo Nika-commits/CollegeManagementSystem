@@ -7,5 +7,5 @@ public interface IAuthService
 {
     public Task<RegistrationResponse> RegisterStudent(RegisterUserDTO registerUserDto);
     public Task<RegistrationResponse> RegisterInstructor(RegisterUserDTO registerUserDto);
-    public Task<(bool Success, List<string> Errors)> LoginUser(LoginUserDto loginUserDto);
+    public Task<LoginResponse> LoginUser(LoginUserDto loginUserDto);
 }

@@ -1,4 +1,5 @@
 using CollegeManagementSystem.Data.DTO.Request;
+using CollegeManagementSystem.Data.DTO.Response;
 using CollegeManagementSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -42,13 +43,13 @@ public class AuthController(IAuthService authService) : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> LoginUser(LoginUserDto user)
     {
-        var (success, errors) = await authService.LoginUser(user);
+        var result = await authService.LoginUser(user);
 
-        if (!success)
+        if (!result.Success)
         {
-            return BadRequest(errors);
+            return BadRequest(result.Error);
         }
 
-        return Ok(new { Success = true, User = user.Email });
+        return Ok(LoginResponse.Ok("token"));
     }
 }

@@ -99,23 +99,22 @@ public class AuthService(
         };
     }
 
-    public async Task<(bool Success, List<string> Errors)> LoginUser(LoginUserDto data)
+    public async Task<LoginResponse> LoginUser(LoginUserDto data)
     {
         var user = await userManager.FindByEmailAsync(data.Email);
         if (user == null)
         {
-            return (false, ["Invalid Email or Password"]);
+            return LoginResponse.Fail("Invalid Email or Password");
         }
 
-        var result = await signInManager.CheckPasswordSignInAsync(user, data.Password, false);
+        var result = await signInManager.CheckPasswordSignInAsync(user, data.Password, true);
 
         if (!result.Succeeded)
         {
-            return (false, ["Invalid Email or Password"]);
+            return LoginResponse.Fail("Invalid Email Or Password");
         }
 
         var roles = await userManager.GetRolesAsync(user);
-
-        return (true, []);
+        return LoginResponse.Ok("Token");
     }
 }
