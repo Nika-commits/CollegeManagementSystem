@@ -11,11 +11,11 @@ public class AuthController(IAuthService authService) : ControllerBase
     [HttpPost("register-student")]
     public async Task<IActionResult> RegisterStudent(RegisterUserDTO user)
     {
-        var (success, errors) = await authService.RegisterStudent(user);
+        var result = await authService.RegisterStudent(user);
 
-        if (!success)
+        if (!result.Success)
         {
-            return BadRequest(errors);
+            return BadRequest(result.Errors);
         }
 
         return Ok(new { Success = true, User = user.Email });
@@ -24,11 +24,11 @@ public class AuthController(IAuthService authService) : ControllerBase
     [HttpPost("register-instructor")]
     public async Task<IActionResult> RegisterInstructor(RegisterUserDTO user)
     {
-        var (success, errors) = await authService.RegisterInstructor(user);
+        var result = await authService.RegisterInstructor(user);
 
-        if (!success)
+        if (!result.Success)
         {
-            return BadRequest(errors);
+            return BadRequest(result.Errors);
         }
 
         return Ok(new

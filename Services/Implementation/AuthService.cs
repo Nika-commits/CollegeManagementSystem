@@ -1,5 +1,6 @@
 using CollegeManagementSystem.Data;
 using CollegeManagementSystem.Data.DTO.Request;
+using CollegeManagementSystem.Data.DTO.Response;
 using CollegeManagementSystem.Data.Entities;
 using CollegeManagementSystem.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -14,7 +15,8 @@ public class AuthService(
 ) :
     IAuthService
 {
-    public async Task<(bool Success, List<string> Errors)> RegisterStudent(RegisterUserDTO data)
+
+    public async Task<RegistrationResponse> RegisterStudent(RegisterUserDTO data)
     {
         var transaction = await db.Database.BeginTransactionAsync();
         var user = new User
@@ -30,21 +32,33 @@ public class AuthService(
 
         if (!result.Succeeded)
         {
-            return (false, result.Errors.Select(x => x.Description).ToList());
+            return new RegistrationResponse
+            {
+                Success = false,
+                Errors = result.Errors.Select(x => x.Description).ToList()
+            };
         }
 
         var addRoleStudent = await userManager.AddToRoleAsync(user, "Student");
         if (!addRoleStudent.Succeeded)
         {
             await transaction.RollbackAsync();
-            return (false, addRoleStudent.Errors.Select(x => x.Description).ToList());
+            return new RegistrationResponse
+            {
+                Success = false,
+                Errors = addRoleStudent.Errors.Select(x => x.Description).ToList()
+            };
         }
 
         await transaction.CommitAsync();
-        return (true, []);
+        return new RegistrationResponse
+        {
+            Success = true,
+            Errors = []
+        };
     }
 
-    public async Task<(bool Success, List<string> Errors)> RegisterInstructor(RegisterUserDTO data)
+    public async Task<RegistrationResponse> RegisterInstructor(RegisterUserDTO data)
     {
         var transaction = await db.Database.BeginTransactionAsync();
         var user = new User
@@ -58,18 +72,31 @@ public class AuthService(
         var result = await userManager.CreateAsync(user, data.Password);
         if (!result.Succeeded)
         {
-            return (false, result.Errors.Select(x => x.Description).ToList());
+            return new RegistrationResponse
+            {
+                Success = false,
+                Errors = result.Errors.Select(x => x.Description).ToList()
+            };
         }
 
         var addRoleInstructor = await userManager.AddToRoleAsync(user, "Instructor");
         if (!addRoleInstructor.Succeeded)
         {
             await transaction.RollbackAsync();
-            return (false, addRoleInstructor.Errors.Select(x => x.Description).ToList());
+
+            return new RegistrationResponse
+            {
+                Success = false,
+                Errors = result.Errors.Select(x => x.Description).ToList()
+            };
         }
 
         await transaction.CommitAsync();
-        return (true, []);
+        return new RegistrationResponse
+        {
+            Success = true,
+            Errors = []
+        };
     }
 
     public async Task<(bool Success, List<string> Errors)> LoginUser(LoginUserDto data)
